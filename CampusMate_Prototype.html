@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusMate Prototype</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#eaf0f8;color:#0f172a}
+.app{width:100%;min-height:100vh;display:flex}.side{width:230px;background:#0f172a;color:#fff;padding:26px 18px;position:fixed;top:0;bottom:0}
+.brand{font-size:24px;font-weight:800;margin:5px 10px 35px}.brand span{color:#38bdf8}.nav button{display:block;width:100%;border:0;background:transparent;color:#cbd5e1;text-align:left;padding:13px 12px;margin:5px 0;border-radius:10px;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#1e293b;color:#fff}
+.main{margin-left:230px;width:calc(100% - 230px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:27px}.profile{background:#fff;padding:9px 13px;border-radius:12px;box-shadow:0 4px 16px #0000000c}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0000000a}.metric{font-size:28px;font-weight:800;margin:7px 0}.muted{color:#64748b;font-size:13px}.blue{color:#2563eb}.green{color:#10b981}.amber{color:#f59e0b}.section{margin-top:18px}.section h2{font-size:18px}.list{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}.item{padding:14px 0;border-bottom:1px solid #e2e8f0}.item:last-child{border-bottom:0}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:11px;font-weight:700}.btn{border:0;border-radius:9px;padding:9px 12px;background:#2563eb;color:#fff;cursor:pointer;font-weight:700}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.hidden{display:none}
+.task{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#f8fafc;border-radius:12px;margin:10px 0}.done{opacity:.55;text-decoration:line-through}
+.notice{padding:14px;border-left:4px solid #2563eb;background:#f8fafc;border-radius:8px;margin:10px 0}.bar{height:9px;background:#e2e8f0;border-radius:10px;overflow:hidden}.fill{height:100%;background:#2563eb;border-radius:10px}
+@media(max-width:900px){.side{width:75px}.brand{font-size:0}.brand span{font-size:24px}.nav button{font-size:0;text-align:center}.main{margin-left:75px;width:calc(100% - 75px);padding:20px}.grid{grid-template-columns:repeat(2,1fr)}.list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="brand">Campus<span>Mate</span></div>
+<div class="nav">
+<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button>
+<button onclick="show('timetable',this)">🗓 Timetable</button>
+<button onclick="show('tasks',this)">✓ Assignments</button>
+<button onclick="show('attendance',this)">📊 Attendance</button>
+<button onclick="show('notices',this)">🔔 Notices</button>
+<button onclick="show('events',this)">🎫 Events</button>
+</div>
+</aside>
+<main class="main">
+<div class="top"><h1 id="pageTitle">Good evening, Student 👋</h1><div class="profile">CSE • 2nd Year</div></div>
+
+<section id="dashboard">
+<div class="grid">
+<div class="card"><div class="muted">Today's Classes</div><div class="metric blue">4</div><div class="muted">Next: Data Structures • 10:00 AM</div></div>
+<div class="card"><div class="muted">Pending Tasks</div><div class="metric amber">3</div><div class="muted">Next deadline: Tomorrow</div></div>
+<div class="card"><div class="muted">Attendance</div><div class="metric green">86%</div><div class="muted">Across current subjects</div></div>
+<div class="card"><div class="muted">New Notices</div><div class="metric">5</div><div class="muted">2 marked important</div></div>
+</div>
+<div class="section list">
+<div class="card"><div class="row"><h2>Today's Schedule</h2><span class="pill">Live plan</span></div>
+<div class="item"><b>09:00 – 10:00</b><br><span class="muted">Operating Systems • Room 204</span></div>
+<div class="item"><b>10:00 – 11:00</b><br><span class="muted">Data Structures • Lab 2</span></div>
+<div class="item"><b>11:15 – 12:15</b><br><span class="muted">Java Programming • Room 107</span></div></div>
+<div class="card"><div class="row"><h2>Priority Tasks</h2><button class="btn" onclick="show('tasks',document.querySelectorAll('.nav button')[2])">View all</button></div>
+<div class="task"><span>DS Assignment</span><span class="pill">Due tomorrow</span></div>
+<div class="task"><span>OOPS Record</span><span class="pill">Due Friday</span></div>
+<div class="task"><span>Innovation PPT</span><span class="pill">Due Monday</span></div></div>
+</div>
+</section>
+
+<section id="timetable" class="hidden"><div class="card"><h2>Weekly Timetable</h2>
+<div class="task"><b>Monday</b><span>OS • DS • Java • Maths</span></div><div class="task"><b>Tuesday</b><span>DBMS • Java Lab • English</span></div><div class="task"><b>Wednesday</b><span>DS • OOPS • DBMS</span></div><div class="task"><b>Thursday</b><span>Networks • Maths • Lab</span></div><div class="task"><b>Friday</b><span>OOPS • Seminar • Project</span></div></div></section>
+
+<section id="tasks" class="hidden"><div class="card"><div class="row"><h2>Assignments & Tasks</h2><button class="btn" onclick="addTask()">+ Add Task</button></div>
+<div id="taskList"><div class="task"><span>Data Structures Assignment</span><button class="btn" onclick="complete(this)">Complete</button></div>
+<div class="task"><span>Java OOPS Record</span><button class="btn" onclick="complete(this)">Complete</button></div>
+<div class="task"><span>Innovation Research PPT</span><button class="btn" onclick="complete(this)">Complete</button></div></div></div></section>
+
+<section id="attendance" class="hidden"><div class="card"><h2>Attendance Overview</h2>
+<div class="item"><div class="row"><b>Data Structures</b><span>90%</span></div><div class="bar"><div class="fill" style="width:90%"></div></div></div>
+<div class="item"><div class="row"><b>Operating Systems</b><span>84%</span></div><div class="bar"><div class="fill" style="width:84%"></div></div></div>
+<div class="item"><div class="row"><b>Java Programming</b><span>88%</span></div><div class="bar"><div class="fill" style="width:88%"></div></div></div>
+<div class="item"><div class="row"><b>Mathematics</b><span>82%</span></div><div class="bar"><div class="fill" style="width:82%"></div></div></div></div></section>
+
+<section id="notices" class="hidden"><div class="card"><h2>Campus Notices</h2>
+<div class="notice"><b>Skill Development Workshop</b><br><span class="muted">Workshop registration closes this week.</span></div>
+<div class="notice"><b>Internal Assessment Schedule</b><br><span class="muted">Check the updated department notice.</span></div>
+<div class="notice"><b>Club Activity</b><br><span class="muted">Student club event announced for Friday.</span></div></div></section>
+
+<section id="events" class="hidden"><div class="card"><h2>Upcoming Events</h2>
+<div class="task"><span><b>Innovation Workshop</b><br><span class="muted">Friday • Seminar Hall</span></span><button class="btn" onclick="alert('Event saved to CampusMate')">Save</button></div>
+<div class="task"><span><b>Tech Club Meetup</b><br><span class="muted">Next Tuesday • Lab 1</span></span><button class="btn" onclick="alert('Event saved to CampusMate')">Save</button></div>
+</div></section>
+</main></div>
+<script>
+const sections=['dashboard','timetable','tasks','attendance','notices','events'];
+function show(id,btn){
+sections.forEach(x=>document.getElementById(x).classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+if(btn) btn.classList.add('active');
+const names={dashboard:'Good evening, Student 👋',timetable:'Your Timetable',tasks:'Assignments & Tasks',attendance:'Attendance Overview',notices:'Campus Notices',events:'Upcoming Events'};
+document.getElementById('pageTitle').textContent=names[id];
+}
+function complete(btn){btn.parentElement.classList.add('done');btn.textContent='Completed';btn.disabled=true}
+function addTask(){const t=prompt('Enter a task name:');if(!t)return;const d=document.createElement('div');d.className='task';d.innerHTML='<span>'+t.replaceAll('<','&lt;')+'</span><button class="btn" onclick="complete(this)">Complete</button>';document.getElementById('taskList').appendChild(d)}
+</script>
+</body></html>
